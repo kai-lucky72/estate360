@@ -1,0 +1,1 @@
+Authentication, roles (admin, agent, buyer, landlord, tenant, investor). Handles registration, login, profiles, and verification (with phone/email/ID).

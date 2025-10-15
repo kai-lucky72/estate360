@@ -1,0 +1,1 @@
+Manages real estate agents, performance analytics, commissions, and assigned properties.

@@ -1,0 +1,1 @@
+Manages digital contracts (rent agreements, sales documents) — supports e-signatures and PDF generation.

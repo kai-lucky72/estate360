@@ -1,0 +1,1 @@
+Core module for listing, managing, and categorizing properties (houses, apartments, land, offices, etc.). Supports photos, location, amenities, and availability.

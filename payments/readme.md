@@ -1,0 +1,1 @@
+Integrates with mobile money (MTN/Airtel), Stripe, or Flutterwave for rent payments, property purchases, and deposits. Tracks payment history.

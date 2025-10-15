@@ -1,0 +1,1 @@
+Handles tenant onboarding, rent cycles, invoices, and automatic rent reminders.

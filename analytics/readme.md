@@ -1,0 +1,1 @@
+AI-powered insights — price predictions, occupancy trends, revenue analysis, and property valuation.

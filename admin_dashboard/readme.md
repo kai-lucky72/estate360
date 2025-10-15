@@ -1,0 +1,1 @@
+Gives platform admins full visibility — user metrics, revenue stats, property analytics, and fraud detection.

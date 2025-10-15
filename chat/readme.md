@@ -1,0 +1,1 @@
+Real-time chat between clients, agents, landlords, and tenants. Could be WebSocket-based (Django Channels).

@@ -1,0 +1,1 @@
+Enables users to invest in real estate projects collectively (fractional ownership, crowdfunding for estates).

@@ -1,0 +1,1 @@
+Manages appointments, property viewings, and automatic booking calendars between agents and clients.

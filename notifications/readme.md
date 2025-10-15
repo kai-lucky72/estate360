@@ -1,0 +1,1 @@
+Sends in-app and email/SMS alerts (new listings, rent due, maintenance updates, offers).
