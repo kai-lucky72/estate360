@@ -3,9 +3,17 @@ from .models import Property, PropertyImage, PropertyDocument
 
 
 class PropertyImageSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+
     class Meta:
         model = PropertyImage
         fields = ["id", "image", "caption"]
+
+    def get_image(self, obj):
+        request = self.context.get('request')
+        if obj.image and hasattr(obj.image, 'url'):
+            return request.build_absolute_uri(obj.image.url) if request else obj.image.url
+        return None
 
 
 class PropertyDocumentSerializer(serializers.ModelSerializer):
@@ -17,15 +25,23 @@ class PropertyDocumentSerializer(serializers.ModelSerializer):
 class PropertySerializer(serializers.ModelSerializer):
     images = PropertyImageSerializer(many=True, required=False)
     documents = PropertyDocumentSerializer(many=True, required=False)
-    agent_name = serializers.CharField(source="agent.username", read_only=True)
+    owner_username = serializers.CharField(source="owner.username", read_only=True)
+    main_image = serializers.SerializerMethodField()
 
     class Meta:
         model = Property
         fields = [
             "id", "title", "description", "price", "location",
-            "agent", "agent_name", "is_available",
-            "images", "documents", "created_at"
+            "owner", "owner_username", "status", "category",
+            "size_sqft", "main_image", "images", "documents", "date_added"
         ]
+        read_only_fields = ["owner"]
+
+    def get_main_image(self, obj):
+        request = self.context.get('request')
+        if obj.main_image and hasattr(obj.main_image, 'url'):
+            return request.build_absolute_uri(obj.main_image.url) if request else obj.main_image.url
+        return None
 
     def create(self, validated_data):
         images_data = validated_data.pop("images", [])

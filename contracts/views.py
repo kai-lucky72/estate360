@@ -1,8 +1,10 @@
 from rest_framework import viewsets, permissions, status
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import Contract
 from .serializers import ContractSerializer
 from booking.models import Booking
+from admin_dashboard.utils import log_system_action
 
 
 class ContractViewSet(viewsets.ModelViewSet):
@@ -29,4 +31,13 @@ class ContractViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
+        log_system_action(request.user, f"Contract created from booking {booking_id}", f"Property: {booking.property}")
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    @action(detail=True, methods=['post'])
+    def sign(self, request, pk=None):
+        contract = self.get_object()
+        contract.signed = True
+        contract.save()
+        log_system_action(request.user, f"Contract signed: {contract.id}", f"Property: {contract.property}")
+        return Response({"status": "Contract signed"})

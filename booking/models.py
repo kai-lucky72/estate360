@@ -11,6 +11,7 @@ class Booking(models.Model):
         ("approved", "Approved"),
         ("rejected", "Rejected"),
         ("completed", "Completed"),
+        ("cancelled", "Cancelled"),
     ]
 
     property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name="bookings")

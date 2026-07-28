@@ -3,9 +3,9 @@ from .models import Agent, AgentPropertyAssignment, Commission
 from .serializers import AgentSerializer, AgentPropertyAssignmentSerializer, CommissionSerializer
 
 class AgentViewSet(viewsets.ModelViewSet):
-    queryset = Agent.objects.all()
+    queryset = Agent.objects.all().select_related('user')
     serializer_class = AgentSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 class AgentPropertyAssignmentViewSet(viewsets.ModelViewSet):
     queryset = AgentPropertyAssignment.objects.all()

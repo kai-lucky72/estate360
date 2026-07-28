@@ -15,4 +15,5 @@ urlpatterns = [
     path('v1/notifications/', include('notifications.urls')),
     path('v1/reviews/', include('reviews.urls')),
     path('v1/admin_dashboard/', include('admin_dashboard.urls')),
+    path('health/', include('healthcheck.urls')),
 ]

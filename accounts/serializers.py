@@ -6,6 +6,8 @@ User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
+    profile_image = serializers.SerializerMethodField()
+
     class Meta:
         model = User
         fields = [
@@ -13,6 +15,12 @@ class UserSerializer(serializers.ModelSerializer):
             "profile_image", "is_verified", "date_joined"
         ]
         read_only_fields = ["id", "is_verified", "date_joined"]
+
+    def get_profile_image(self, obj):
+        request = self.context.get('request')
+        if obj.profile_image and hasattr(obj.profile_image, 'url'):
+            return request.build_absolute_uri(obj.profile_image.url) if request else obj.profile_image.url
+        return None
 
 
 class RegisterSerializer(serializers.ModelSerializer):

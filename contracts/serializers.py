@@ -32,6 +32,7 @@ class ContractSerializer(serializers.ModelSerializer):
             "is_fully_signed",
             "created_at",
         ]
+        read_only_fields = ["property", "agent", "client"]
 
     def create(self, validated_data):
         # Automatically derive agent and property from booking

@@ -24,8 +24,9 @@ class BookingSerializer(serializers.ModelSerializer):
             "notes",
             "created_at",
         ]
+        read_only_fields = ["client", "agent"]
 
     def create(self, validated_data):
         property_instance = validated_data["property"]
-        validated_data["agent"] = property_instance.agent
+        validated_data["agent"] = property_instance.owner
         return super().create(validated_data)

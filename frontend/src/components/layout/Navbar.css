@@ -1,0 +1,197 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 4.5rem;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: -0.025em;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-link {
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding: 0.25rem 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  font-size: 0.95rem;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.notif-wrapper {
+  position: relative;
+}
+
+.notif-bell {
+  position: relative;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.notif-bell:hover { background: var(--surface); color: var(--primary); }
+
+.notif-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 18px;
+  height: 18px;
+  background: var(--error);
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+}
+
+.notif-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 320px;
+  background: var(--background);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--surface-border);
+  z-index: 200;
+  overflow: hidden;
+}
+
+.notif-dropdown-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.notif-dropdown-header h4 { font-size: 0.95rem; font-weight: 700; }
+
+.notif-dropdown-body { max-height: 300px; overflow-y: auto; }
+
+.notif-item {
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid var(--surface-border);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.notif-item:hover { background: var(--surface); }
+.notif-item.unread { background: var(--primary-light); }
+.notif-item.unread:hover { background: #d2e3fc; }
+
+.notif-text { font-size: 0.85rem; color: var(--text); margin-bottom: 0.2rem; }
+.notif-time { font-size: 0.75rem; color: var(--text-muted); }
+
+.notif-empty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.notif-view-all {
+  display: block;
+  text-align: center;
+  padding: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary);
+  border-top: 1px solid var(--surface-border);
+  transition: background 0.2s;
+}
+
+.notif-view-all:hover { background: var(--surface); }
+
+.mobile-toggle {
+  background: none;
+  border: none;
+  color: var(--text);
+  padding: 0.5rem;
+}
+
+.mobile-notif { padding: 0.5rem; }
+
+.desktop-only { display: flex; }
+.mobile-only { display: none; }
+
+.mobile-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--background);
+  border-bottom: 1px solid var(--surface-border);
+  padding: 1rem 0;
+  box-shadow: var(--shadow-md);
+}
+
+.mobile-menu-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mobile-nav-link {
+  display: block;
+  padding: 0.75rem 0;
+  font-weight: 500;
+  color: var(--text);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.mobile-divider { height: 1px; background: var(--surface-border); margin: 0.5rem 0; }
+
+.mobile-auth-btn { margin-top: 0.5rem; }
+
+@media (max-width: 768px) {
+  .desktop-only { display: none; }
+  .mobile-only { display: flex; align-items: center; gap: 0.5rem; }
+}

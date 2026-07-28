@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from django.db.models import Count, Sum
 from django.utils import timezone
 
+from core.permissions import IsAdminOnly
+
 from .models import DashboardStat, SystemLog
 from properties.models import Property
 from contracts.models import Contract
@@ -13,6 +15,8 @@ from .serializers import DashboardStatSerializer, SystemLogSerializer
 
 class DashboardSummaryView(views.APIView):
     """Return live dashboard summary"""
+    permission_classes = [IsAdminOnly]
+
     def get(self, request):
         total_users = User.objects.count()
         total_properties = Property.objects.count()
@@ -32,8 +36,10 @@ class DashboardSummaryView(views.APIView):
 class DashboardStatListView(generics.ListCreateAPIView):
     queryset = DashboardStat.objects.all().order_by('-date')
     serializer_class = DashboardStatSerializer
+    permission_classes = [IsAdminOnly]
 
 
 class SystemLogListView(generics.ListAPIView):
     queryset = SystemLog.objects.all().order_by('-timestamp')
     serializer_class = SystemLogSerializer
+    permission_classes = [IsAdminOnly]

@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment variables
+.env
+
+# Git
+.git
+.gitignore
+
+# SQLite
+db.sqlite3
+
+# Static media
+staticfiles/
+media/
+
+# Logs
+logs/
+
+# Example env
+.env.example

@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+env/
+media/
+staticfiles/
+logs/
+.idea/
+*.egg-info/
+*.egg
+.DS_Store
+frontend/node_modules/
+frontend/.next/
+frontend/out/

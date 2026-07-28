@@ -1,0 +1,118 @@
+.auth-container {
+  min-height: calc(100vh - 4.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  background: var(--surface);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 480px;
+  padding: 3rem 2.5rem;
+  background: var(--background);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--surface-border);
+  box-shadow: var(--shadow-lg);
+}
+
+.auth-title {
+  font-size: 2rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.auth-subtitle {
+  text-align: center;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+.auth-error {
+  background: var(--error-light);
+  color: var(--error);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+  border: 1px solid rgba(229,62,62,0.15);
+  text-align: center;
+}
+
+.auth-success {
+  background: var(--accent-light);
+  color: var(--accent);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+  border: 1px solid rgba(56,161,105,0.15);
+  text-align: center;
+}
+
+.auth-form {
+  margin-bottom: 2rem;
+}
+
+.auth-name-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.auth-footer {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.auth-link {
+  color: var(--primary);
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.auth-link:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+.role-selector {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.role-btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--surface-border);
+  background: var(--background);
+  color: var(--text-muted);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.role-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.role-btn.active {
+  background: var(--primary-light);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+@media (max-width: 768px) {
+  .auth-card { padding: 2rem 1.5rem; }
+  .auth-name-row { flex-direction: column; gap: 0; }
+}

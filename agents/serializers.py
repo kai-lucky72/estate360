@@ -4,10 +4,20 @@ from properties.serializers import PropertySerializer
 from accounts.serializers import UserSerializer
 
 class AgentSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = UserSerializer(read_only=True)
+    profile_image = serializers.SerializerMethodField()
+
     class Meta:
         model = Agent
-        fields = "__all__"
+        fields = ["id", "user", "bio", "license_number", "phone", "profile_image", "verified", "rating"]
+
+    def get_profile_image(self, obj):
+        request = self.context.get('request')
+        # Prefer Agent-level profile_image, fall back to user's
+        img = obj.profile_image or (obj.user.profile_image if obj.user else None)
+        if img and hasattr(img, 'url'):
+            return request.build_absolute_uri(img.url) if request else img.url
+        return None
 
 class AgentPropertyAssignmentSerializer(serializers.ModelSerializer):
     property = PropertySerializer()

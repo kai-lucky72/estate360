@@ -9,19 +9,19 @@ User = get_user_model()
 
 class ChatAppTests(APITestCase):
     def setUp(self):
-        self.user1 = User.objects.create_user(username="alice", password="pass1234")
-        self.user2 = User.objects.create_user(username="bob", password="pass1234")
+        self.user1 = User.objects.create_user(username="alice", password="pass1234", email="alice@example.com")
+        self.user2 = User.objects.create_user(username="bob", password="pass1234", email="bob@example.com")
         self.client = APIClient()
-        self.client.login(username="alice", password="pass1234")
+        self.client.force_authenticate(user=self.user1)
 
+        self.owner = User.objects.create(username='property_owner', email='owner@example.com')
         self.property = Property.objects.create(
             title="Modern House",
             description="A beautiful house",
             price=500000,
             location="Kigali",
-            property_type="house",
-            bedrooms=4,
-            bathrooms=3,
+            category="house",
+            owner=self.owner,
         )
 
         self.room = ChatRoom.objects.create(name="Room 1", property=self.property)

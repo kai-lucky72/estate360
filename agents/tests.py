@@ -9,7 +9,6 @@ User = get_user_model()
 
 class AgentAPITests(APITestCase):
     def setUp(self):
-        # Create users
         self.user = User.objects.create_user(
             username="agentuser",
             email="agent@example.com",
@@ -18,10 +17,15 @@ class AgentAPITests(APITestCase):
             last_name="Doe",
         )
 
-        self.client = APIClient()
-        self.client.login(username="agentuser", password="strongpassword123")
+        self.admin = User.objects.create_superuser(
+            username="adminuser",
+            email="admin@example.com",
+            password="adminpass",
+        )
 
-        # Create agent profile
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
         self.agent = Agent.objects.create(
             user=self.user,
             bio="Top real estate agent in Kigali.",
@@ -31,25 +35,22 @@ class AgentAPITests(APITestCase):
             rating=4.8,
         )
 
-        # Create property
+        self.owner = User.objects.create_user(username='owner1', email='owner1@example.com', password='pass123')
         self.property = Property.objects.create(
             title="Luxury Apartment",
             description="Modern apartment with city view",
             price=300000,
             location="Kigali City Center",
-            property_type="apartment",
-            bedrooms=3,
-            bathrooms=2,
+            category="apartment",
+            owner=self.owner,
         )
 
-        # Create assignment
         self.assignment = AgentPropertyAssignment.objects.create(
             agent=self.agent,
             property=self.property,
             active=True
         )
 
-        # Create commission
         self.commission = Commission.objects.create(
             agent=self.agent,
             property=self.property,
@@ -58,37 +59,31 @@ class AgentAPITests(APITestCase):
         )
 
     def test_agent_profile_created(self):
-        """Ensure the agent profile is created successfully."""
         self.assertEqual(Agent.objects.count(), 1)
         self.assertTrue(self.agent.verified)
         self.assertEqual(self.agent.user.username, "agentuser")
 
     def test_property_assignment_relationship(self):
-        """Ensure property assignments link correctly between agent and property."""
         self.assertEqual(self.assignment.agent, self.agent)
         self.assertEqual(self.assignment.property, self.property)
 
     def test_commission_creation(self):
-        """Ensure commissions are properly recorded for agents."""
         self.assertEqual(self.commission.amount, 25000.00)
         self.assertFalse(self.commission.paid)
 
     def test_agent_list_api(self):
-        """Ensure authenticated user can view agent list."""
         url = reverse("agent-list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("RWA-2025-001", str(response.data))
 
     def test_agent_detail_api(self):
-        """Ensure an agent’s details are accessible."""
         url = reverse("agent-detail", args=[self.agent.id])
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["license_number"], "RWA-2025-001")
 
     def test_create_agent_api_forbidden_for_unauthenticated(self):
-        """Ensure unauthenticated users cannot create an agent."""
         self.client.logout()
         url = reverse("agent-list")
         response = self.client.post(url, {
@@ -98,21 +93,47 @@ class AgentAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_assignment_list_api(self):
-        """Ensure assignments can be listed through API."""
         url = reverse("agentpropertyassignment-list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(len(response.data) >= 1)
 
     def test_commission_list_api(self):
-        """Ensure commissions can be retrieved via API."""
         url = reverse("commission-list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(any(c["amount"] == "25000.00" for c in response.data))
 
     def test_mark_commission_paid(self):
-        """Simulate marking a commission as paid."""
         self.commission.paid = True
         self.commission.save()
         self.assertTrue(self.commission.paid)
+
+    def test_agent_list_unauthenticated(self):
+        """Ensure unauthenticated users cannot list agents."""
+        self.client.logout()
+        url = reverse("agent-list")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_agent_rating_validation(self):
+        """Ensure agent rating is within valid range."""
+        self.agent.rating = 5.0
+        self.agent.save()
+        self.assertEqual(self.agent.rating, 5.0)
+
+    def test_commission_tracking(self):
+        """Ensure commissions can be tracked by paid/unpaid status."""
+        Commission.objects.create(
+            agent=self.agent, property=self.property, amount=10000.00, paid=True
+        )
+        paid_commissions = Commission.objects.filter(paid=True).count()
+        unpaid_commissions = Commission.objects.filter(paid=False).count()
+        self.assertEqual(paid_commissions, 1)
+        self.assertEqual(unpaid_commissions, 1)
+
+    def test_agent_assignment_deactivate(self):
+        """Ensure agent assignment can be deactivated."""
+        self.assignment.active = False
+        self.assignment.save()
+        self.assertFalse(self.assignment.active)

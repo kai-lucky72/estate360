@@ -11,18 +11,18 @@ User = get_user_model()
 
 class AnalyticsTests(APITestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username="admin", password="pass1234")
         self.client = APIClient()
-        self.client.login(username="admin", password="pass1234")
+        self.user = User.objects.create_user(username="testuser", password="password123", email="test@test.com")
+        self.client.force_authenticate(user=self.user)
 
+        self.owner = User.objects.create(username='property_owner', email='owner@example.com')
         self.property = Property.objects.create(
             title="Kigali Villa",
             description="Luxury villa in Kigali",
             price=800000,
             location="Kacyiru",
-            property_type="villa",
-            bedrooms=5,
-            bathrooms=4,
+            category="villa",
+            owner=self.owner,
         )
 
         self.agent = Agent.objects.create(
@@ -33,10 +33,11 @@ class AnalyticsTests(APITestCase):
         )
 
         self.investment = Investment.objects.create(
-            title="Smart City Project",
-            description="Rwanda’s futuristic investment opportunity",
-            target_amount=1000000,
-            raised_amount=250000,
+            investor=self.user,
+            property=self.property,
+            amount_invested=250000.00,
+            share_percentage=25.0,
+            roi_estimate=10.0,
         )
 
         self.analytics = PropertyAnalytics.objects.create(property=self.property, views=100)
