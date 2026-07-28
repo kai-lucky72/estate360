@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { authAPI, getTokenPayload, notificationAPI } from '@/lib/api';
-import { Building2, Menu, X, User, Bell, LogOut, ChevronDown } from 'lucide-react';
+import { Building2, Menu, X, User, Bell, LogOut, ChevronDown, Shield } from 'lucide-react';
 import './Navbar.css';
 
 export default function Navbar() {
@@ -11,6 +11,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isAuth, setIsAuth] = useState(false);
   const [userName, setUserName] = useState('');
+  const [userRole, setUserRole] = useState('');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [notifOpen, setNotifOpen] = useState(false);
@@ -23,6 +24,7 @@ export default function Navbar() {
       const payload = getTokenPayload();
       if (payload) {
         setUserName(payload.first_name || payload.username || 'User');
+        setUserRole(payload.role || '');
       }
       notificationAPI.getNotifications().then(res => {
         const data = res.data || res;
@@ -96,6 +98,11 @@ export default function Navbar() {
                   </div>
                 )}
               </div>
+              {(userRole === 'admin') && (
+                <Link href="/admin" className="btn btn-ghost" style={{ color: 'var(--secondary)' }}>
+                  <Shield size={18} /> Admin
+                </Link>
+              )}
               <Link href="/dashboard" className="btn btn-ghost user-btn">
                 <User size={18} /> {userName}
               </Link>
@@ -132,6 +139,9 @@ export default function Navbar() {
             {isAuth ? (
               <>
                 <Link href="/dashboard" className="mobile-nav-link" onClick={closeMobile}>Dashboard</Link>
+                {(userRole === 'admin') && (
+                  <Link href="/admin" className="mobile-nav-link" onClick={closeMobile}>Admin Panel</Link>
+                )}
                 <button onClick={handleLogout} className="btn btn-outline full-width mobile-auth-btn">Logout</button>
               </>
             ) : (

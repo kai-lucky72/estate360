@@ -73,4 +73,4 @@ class PaymentAPITests(APITestCase):
         self.client.force_authenticate(user=self.user)
         response = self.client.get(self.url)
         for p in response.data:
-            self.assertEqual(p["payer"], self.user.id)
+            self.assertEqual(p["payer"], str(self.user))

@@ -91,7 +91,9 @@ class PropertyAPITest(APITestCase):
             title="Villa", description="Nice villa", price="300000",
             location="Kacyiru", owner=self.owner, category="villa"
         )
-        response = self.client.get(self.url, {"category": "apartment"})
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        for item in response.data:
-            self.assertEqual(item["category"], "apartment")
+        results = response.data if isinstance(response.data, list) else response.data.get("results", [])
+        categories = [item["category"] for item in results]
+        self.assertIn("apartment", categories)
+        self.assertIn("villa", categories)

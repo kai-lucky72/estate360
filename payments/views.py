@@ -9,6 +9,9 @@ class PaymentViewSet(viewsets.ModelViewSet):
     serializer_class = PaymentSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):
+        return Payment.objects.filter(payer=self.request.user)
+
     def perform_create(self, serializer):
         payment = serializer.save(payer=self.request.user)
         send_notification(
