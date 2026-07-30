@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE = 'http://localhost:8000';
+const BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 const API_BASE = `${BASE}/api/v1`;
 
 const adminApi = axios.create({

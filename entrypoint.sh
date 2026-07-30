@@ -7,5 +7,7 @@ python manage.py migrate --noinput
 echo "Collecting static files..."
 python manage.py collectstatic --noinput --clear
 
-echo "Starting Daphne ASGI server..."
-exec daphne -b 0.0.0.0 -p 8000 estate.asgi:application
+PORT="${PORT:-8000}"
+
+echo "Starting Daphne ASGI server on port ${PORT}..."
+exec daphne -b 0.0.0.0 -p "${PORT}" estate.asgi:application

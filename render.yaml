@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: estate360-api
+    runtime: image
+    repo: https://github.com/kai-lucky72/estate360
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: ALLOWED_HOSTS
+        value: estate360-api.onrender.com,localhost,127.0.0.1
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://estate360.vercel.app
+      - key: CSRF_TRUSTED_ORIGINS
+        value: https://estate360.vercel.app
+      - key: FRONTEND_URL
+        value: https://estate360.vercel.app
+      - key: DJANGO_LOG_LEVEL
+        value: INFO
+      - key: THROTTLE_ANON_RATE
+        value: 100/day
+      - key: THROTTLE_USER_RATE
+        value: 1000/day
