@@ -11,6 +11,7 @@ logs/
 *.egg-info/
 *.egg
 .DS_Store
+.wrangler/
 frontend/node_modules/
 frontend/.next/
 frontend/out/
